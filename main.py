@@ -1,7 +1,6 @@
 from folium import Map, Marker, Popup
 from geo import Geopoint
-import webbrowser
-import os
+
 # Get latitude and longitude values
 # without using CLI 
 # locations = [[31, 121], [30, 120], [12, 119]]
@@ -9,10 +8,28 @@ import os
 # using CLI
 
 latitude = float(input ('Hey user, please enter the latitude of the place, e.g. 31.44 : '))
-longitude = float(input ('Hey user, please enter the longitude of the place, e.g. 121.36  '))
+longitude = float(input ('Hey user, please enter the longitude of the place, e.g. 121.36 ; '))
 locations = [[latitude, longitude]]
 
+tz = Geopoint(latitude= locations[0][0], longitude= locations[0][1])
+city = tz.get_time_zone().split('/')
+print(f'You are nearby {city[-1]} in {city[0]}')
 
+
+antipode_latitude = latitude * -1
+# Add 180 for negative longtitudes
+# Subtract 180 for positive longitudes
+if longitude < 0:
+    antipode_longitude = longitude + 180
+else:
+    antipode_longitude = longitude - 180
+    
+locations.append([antipode_latitude, antipode_longitude])
+
+
+anti_tz = Geopoint(latitude= locations[1][0], longitude= locations[1][1])
+anti_city = anti_tz.get_time_zone().split('/')
+print(f'The other side of world is nearby {anti_city[-1]} in {anti_city[0]}')
 
 # Folium a map instance
 # mymap = Map(location =[31.44, 121.36])

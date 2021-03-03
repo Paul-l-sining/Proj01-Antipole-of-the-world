@@ -4,6 +4,7 @@ from timezonefinder import TimezoneFinder
 from sunnyday import Weather
 from random import uniform
 from folium import Marker
+from filestack import Client
 
 # class is like a blueprint where you can create stuff (instances) using it.
 class Geopoint(Marker):
@@ -16,6 +17,10 @@ class Geopoint(Marker):
 
     def closest_parallel(self):
         return round(self.latitude)  # latitude can't be accessed but self.latitude can
+    
+    def get_time_zone(self):
+        timezone_string = TimezoneFinder().closest_timezone_at(lat= self.latitude, lng= self.longitude)
+        return timezone_string
         
     def get_time(self):
         timezone_string = TimezoneFinder().closest_timezone_at(lat= self.latitude, lng= self.longitude)
@@ -31,13 +36,15 @@ class Geopoint(Marker):
         return cls(latitude = uniform(-90, 90), longitude = uniform(-180, 180))
 
 
-shanghai = Geopoint(latitude= 31.44, longitude= 121.36) # Geopoint is a class, shanghai is an instance
 
+
+# shanghai = Geopoint(latitude= 31.44, longitude= 121.36) # Geopoint is a class, shanghai is an instance
+# shanghai.get_time_zone()
 # shanghai.closest_parallel()
 
 # print(shanghai.latitude_range)
 
 # print(shanghai.closest_parallel())
 # print(shanghai.get_time())
-print(shanghai.get_weather())
+# print(shanghai.get_weather())
 # print(shanghai.random())
